@@ -1,0 +1,307 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#14110c">
+<title>Marcas de contraste</title>
+<style>
+:root{--bg:#14110c;--card:#1d1912;--card2:#251f15;--ink:#f1e8d6;--mut:#a89880;--gold:#d4af37;--gold2:#f3e5ab;--ok:#7fc58a;--warn:#e6b450;--bad:#e07b6a;--line:#3a3022}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;-webkit-text-size-adjust:100%}
+body{padding:0 16px calc(40px + env(safe-area-inset-bottom))}
+.w{max-width:760px;margin:0 auto}
+header{padding:calc(14px + env(safe-area-inset-top)) 0 6px}
+h1{font-size:22px;margin:0;color:var(--gold2);letter-spacing:.2px}
+.sub{color:var(--mut);font-size:13.5px;margin:2px 0 0}
+nav{display:flex;gap:6px;position:sticky;top:0;background:var(--bg);padding:10px 0;z-index:5;overflow-x:auto}
+nav button{flex:1;min-width:max-content;background:var(--card);color:var(--mut);border:1px solid var(--line);border-radius:10px;padding:9px 12px;font:inherit;font-size:14px}
+nav button[aria-selected=true]{color:#1a1405;background:var(--gold);border-color:var(--gold);font-weight:600}
+section{display:none}section.on{display:block}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin:10px 0}
+label.l{display:block;font-size:12.5px;color:var(--mut);margin:12px 0 6px;text-transform:uppercase;letter-spacing:.6px}
+label.l:first-child{margin-top:0}
+input,select{width:100%;background:var(--card2);color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:11px 12px;font:inherit}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{background:var(--card2);color:var(--ink);border:1px solid var(--line);border-radius:999px;padding:7px 12px;font:inherit;font-size:14px}
+.chip[aria-pressed=true]{background:var(--gold);color:#1a1405;border-color:var(--gold);font-weight:600}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.res{border-left:3px solid var(--gold)}
+.res h3{margin:0 0 2px;font-size:16px}
+.res .meta{font-size:12.5px;color:var(--mut)}
+.res p{margin:6px 0 0;font-size:14.5px}
+.res .why{font-size:12.5px;color:var(--gold2);margin-top:6px}
+.b{display:inline-block;font-size:11.5px;font-weight:600;border-radius:6px;padding:2px 7px;margin-left:6px;vertical-align:middle}
+.b.V{background:#1f3a26;color:var(--ok)}.b.P{background:#3d3115;color:var(--warn)}.b.N{background:#3d1f1a;color:var(--bad)}
+.alert{border-radius:12px;padding:11px 13px;margin:10px 0;font-size:14px;border:1px solid}
+.alert.warn{background:#2a2110;border-color:#5b4716;color:#ecd9a6}
+.alert.bad{background:#2c1713;border-color:#6a2c22;color:#f0c1b8}
+.alert.ok{background:#14261a;border-color:#2c5a38;color:#bfe6c8}
+.muted{color:var(--mut)}.small{font-size:13px}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{padding:6px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{color:var(--mut);font-weight:600;font-size:12.5px}
+a{color:var(--gold2)}
+a.tr{display:inline-block;margin-left:8px;padding:3px 11px;border-radius:999px;background:var(--gold);color:#1a1405;font-size:14px;font-weight:700;text-decoration:none;white-space:nowrap;vertical-align:middle}
+details{border-top:1px solid var(--line);padding:8px 0}
+summary{cursor:pointer;color:var(--gold2);font-weight:600}
+ul{padding-left:20px;margin:8px 0}li{margin:4px 0}
+.big{font-size:34px;color:var(--gold2);font-weight:700}
+@media (prefers-color-scheme:light){:root[data-auto]{}}
+</style>
+</head>
+<body>
+<div class="w">
+<header>
+  <h1>Marcas de contraste</h1>
+  <p class="sub">Qué dice una marca y qué no. Cada resultado indica su nivel de verificación.</p>
+</header>
+<nav role="tablist" id="nav">
+  <button role="tab" data-t="buscar" aria-selected="true">Buscar</button>
+  <button role="tab" data-t="cifras" aria-selected="false">Cifras</button>
+  <button role="tab" data-t="fechas" aria-selected="false">Letras UK</button>
+  <button role="tab" data-t="fuentes" aria-selected="false">Fuentes</button>
+</nav>
+
+<section id="buscar" class="on">
+  <div class="card">
+    <label class="l" for="num">Cifra grabada</label>
+    <input id="num" inputmode="numeric" placeholder="p. ej. 750, 916, 925, 84" autocomplete="off">
+    <label class="l">Forma del contorno</label>
+    <div class="chips" id="shapes"></div>
+    <label class="l">Dibujo o símbolo</label>
+    <div class="chips" id="syms"></div>
+    <div class="row2">
+      <div><label class="l" for="pais">País</label><select id="pais"><option value="">Cualquiera</option></select></div>
+      <div><label class="l" for="metal">Metal</label><select id="metal"><option value="">Cualquiera</option><option value="au">Oro</option><option value="ag">Plata</option><option value="pt">Platino</option><option value="pd">Paladio</option></select></div>
+    </div>
+    <p style="margin:12px 0 0"><button class="chip" id="reset">Borrar</button></p>
+  </div>
+  <div id="coh"></div>
+  <div id="out"></div>
+  <p class="small muted">La marca es lo que la pieza <b>declara</b>, y las marcas se falsifican. Esto no sustituye un ensayo ni un contraste oficial.</p>
+</section>
+
+<section id="cifras">
+  <div class="card">
+    <label class="l" for="cf">Milésimas</label>
+    <input id="cf" inputmode="numeric" placeholder="p. ej. 750" autocomplete="off">
+    <div id="cfo" style="margin-top:12px"></div>
+  </div>
+  <div class="card">
+    <label class="l" for="kq">Convertir quilates</label>
+    <input id="kq" inputmode="decimal" placeholder="p. ej. 18" autocomplete="off">
+    <div id="kqo" class="small muted" style="margin-top:8px"></div>
+  </div>
+  <div class="card"><b>Cifras habituales</b><table id="tcf"></table></div>
+</section>
+
+<section id="fechas">
+  <div class="card">
+    <label class="l" for="yr">Año (1975–2026)</label>
+    <input id="yr" inputmode="numeric" placeholder="p. ej. 2013" autocomplete="off">
+    <label class="l" for="lt">…o letra de fecha</label>
+    <input id="lt" maxlength="1" placeholder="p. ej. o" autocomplete="off">
+    <div id="fo" style="margin-top:12px"></div>
+  </div>
+  <div class="alert warn">Vale desde 1975, cuando las cuatro oficinas pasaron a usar la misma letra. Antes de 1975 cada oficina tenía su ciclo y su calendario: esta tabla no sirve, hace falta Bradbury, Jackson o el archivo de Birmingham (ver Fuentes). Desde 1999 la letra es opcional: su ausencia no es sospechosa.</div>
+  <div class="card small">
+    <b>Cómo funciona.</b> Desde 1975 las cuatro oficinas del Reino Unido (Londres, Birmingham, Sheffield, Edimburgo) usan la misma letra, que cambia el 1 de enero. Cada ciclo dura unos 25 años y cambia tipografía, caja y escudo. 1975–1999: mayúsculas (A a Z); 2000–2024: minúsculas (a a z); desde 2025: mayúsculas serif, con 2025 = A y 2026 = B (Dealer’s Notice de Sheffield y Birmingham).
+    <p class="muted" style="margin:8px 0 0"><b>Estado:</b> 2025 y 2026 verificados en el aviso de las oficinas. El resto (1975–2024) es una reconstrucción a partir del índice de Birmingham, no una tabla oficial gratuita: en 1975 y 1999 hay fuentes, el medio se deduce. Dudas conocidas: 1983 (Birmingham la indexa como «J»; otras referencias llaman al mismo trazo una «I» ornamentada) y 2008 («j» según Birmingham). Si la pieza es importante, contrasta con Bradbury o el archivo de Birmingham.</p>
+    <table id="tf" style="margin-top:8px"></table>
+  </div>
+</section>
+
+<section id="fuentes">
+  <div class="alert warn">Esta es una guía de fuentes, no un catálogo de punzones de fabricante. Ese catálogo completo, con fotos, está en libros y bases protegidos por derechos de autor, y no hay API pública. Las URL se comprobaron el 25-10-2026; aun así, ábrelas tú. El botón ES abre la página traducida con Google Translate: no funciona con PDF ni con webs que bloquean traductores, y Google ve la dirección que abres.</div>
+  <div id="fu"></div>
+</section>
+<p class="small muted" style="text-align:center">Datos de un estudio con informe de verificación (25-10-2026). V = verificado en fuente primaria o de primer nivel, P = parcial, N = sin confirmar.</p>
+</div>
+
+<script>
+'use strict';
+const ST={V:'Verificado',P:'Parcial',N:'Sin confirmar'};
+const PAIS={ES:'España',FR:'Francia',UK:'Reino Unido',DE:'Alemania',AT:'Austria-Hungría',RU:'Rusia',CCM:'Convención de Viena',JP:'Japón',IN:'India',CN:'China',HK:'Hong Kong',KR:'Corea',ID:'Indonesia',TR:'Turquía',AE:'Emiratos Árabes',SA:'Arabia Saudí',US:'EE. UU.',CA:'Canadá',MX:'México',PL:'Polonia',CZ:'Chequia',BG:'Bulgaria',RO:'Rumanía'};
+const SHAPES=[['ovalo','Óvalo / elipse'],['rect','Rectángulo'],['rombo','Rombo'],['hexagono','Hexágono'],['octogono','Octógono'],['escudo','Escudo']];
+const SYMS=['águila','búho','cabeza','león','leopardo','estrella','luna','corona','balanza','ancla','rosa','castillo','halcón','palmera','gallo','cisne','espiga','letra'];
+// n: cifras; sh: contorno; sy: símbolos; m: metal (au/ag/pt/pd/any); st: estado
+const D=[
+{id:'es-au',t:'España: elipse con ley y contraseña',c:'ES',m:'au',n:['750','585'],sh:['ovalo'],sy:['letra'],era:'desde 1989',d:'Punzón de garantía español del oro: elipse con la ley (750 primera, 585 segunda) y, a la derecha, la contraseña del laboratorio.',st:'V',src:'RD 197/1988, art. 8 y 19'},
+{id:'es-ag',t:'España: rectángulo horizontal con ley',c:'ES',m:'ag',n:['925','800'],sh:['rect'],sy:['letra'],era:'desde 1989',d:'Punzón de garantía español de la plata: rectángulo horizontal con la ley (925 primera, 800 segunda) y la contraseña del laboratorio.',st:'V',src:'RD 197/1988, art. 8 y 19'},
+{id:'es-pt',t:'España: rombo con ley',c:'ES',m:'pt',n:['950'],sh:['rombo'],sy:['letra'],era:'desde 1989',d:'Punzón de garantía español del platino: rombo con 950 y la contraseña del laboratorio.',st:'V',src:'RD 197/1988, art. 8 y 19'},
+{id:'es-star',t:'España: estrella de cinco puntas con 915',c:'ES',m:'ag',n:['915'],sh:['ovalo'],sy:['estrella'],era:'~1935–1988',d:'Plata española de primera ley, según guías de platería que citan el Reglamento de 1934/1935. No vale para oro ni es «la marca antigua» genérica. Hoy la primera ley es 925.',st:'P',src:'Guías secundarias; el RD 197/1988 sí deroga esos decretos'},
+{id:'es-cometa',t:'España: estrella con cometa',c:'ES',m:'ag',n:['750'],sh:[],sy:['estrella'],era:'~1935–1988',d:'Segunda ley (750) del mismo reglamento. Poco frecuente.',st:'P',src:'Guías secundarias'},
+{id:'es-pre',t:'España antes de 1935: punzón de platero y de ciudad',c:'ES',m:'any',n:[],sh:[],sy:['letra'],era:'antes de 1935',d:'Control irregular. Suele haber punzón del platero y a veces de ciudad (Madrid: oso y madroño; Barcelona: BAR o BARNA). No atribuyas un platero por una letra suelta.',st:'P',src:'Estudio aportado'},
+{id:'fr-aig',t:'Francia: cabeza de águila en hexágono',c:'FR',m:'au',n:['750'],sh:['hexagono'],sy:['águila','cabeza'],era:'garantía actual y reciente',d:'Garantía francesa del oro (~750). No es el búho.',st:'V',src:'Douanes françaises; Chambre Française de l’Or'},
+{id:'fr-buho',t:'Francia: búho (hibou) en óvalo',c:'FR',m:'au',n:['750'],sh:['ovalo'],sy:['búho'],era:'importación desde ~1893; hasard desde ~1902',d:'Oro (≥750) de importación o presentado como «hasard». No es marca de oro de Europa Central, error frecuente en mercadillos.',st:'V',src:'Osprey; Douanes françaises'},
+{id:'fr-min',t:'Francia: cabeza de Minerva',c:'FR',m:'ag',n:['950','800'],sh:[],sy:['cabeza'],era:'—',d:'Garantía francesa de la plata: 1.ª ley 950, 2.ª ley 800.',st:'P',src:'Guías francesas; sin PDF de aduanas que la cite'},
+{id:'fr-maitre',t:'Francia: rombo con iniciales (maître)',c:'FR',m:'any',n:[],sh:['rombo'],sy:['letra'],era:'—',d:'Punzón del fabricante: iniciales y símbolo dentro de un rombo. Identificarlo exige el catálogo (Tardy, Beuque/Interor).',st:'P',src:'Estudio aportado'},
+{id:'uk-leo',t:'Reino Unido: cabeza de leopardo',c:'UK',m:'any',n:[],sh:[],sy:['leopardo','cabeza'],era:'—',d:'Marca de ciudad: Londres.',st:'V',src:'Hallmarking Act 1973, Sch. 2'},
+{id:'uk-anc',t:'Reino Unido: ancla',c:'UK',m:'any',n:[],sh:[],sy:['ancla'],era:'—',d:'Marca de ciudad: Birmingham.',st:'V',src:'Hallmarking Act 1973, Sch. 2'},
+{id:'uk-ros',t:'Reino Unido: rosa',c:'UK',m:'any',n:[],sh:[],sy:['rosa'],era:'—',d:'Marca de ciudad: Sheffield.',st:'V',src:'Hallmarking Act 1973, Sch. 2'},
+{id:'uk-cas',t:'Reino Unido: castillo',c:'UK',m:'any',n:[],sh:[],sy:['castillo'],era:'—',d:'Marca de ciudad: Edimburgo. No confundir con el castillo de la plata de los Emiratos.',st:'V',src:'Hallmarking Act 1973, Sch. 2'},
+{id:'uk-lion',t:'Reino Unido: león pasante',c:'UK',m:'ag',n:['925'],sh:[],sy:['león'],era:'—',d:'Plata de ley (sterling, 925). En Edimburgo el león es rampante.',st:'V',src:'Hallmarking Act 1973, Sch. 2'},
+{id:'uk-brit',t:'Reino Unido: Britannia',c:'UK',m:'ag',n:['958'],sh:[],sy:['cabeza'],era:'—',d:'Plata de ley superior (958).',st:'V',src:'Hallmarking Act 1973, Sch. 2'},
+{id:'uk-au',t:'Reino Unido: cifra en el oro',c:'UK',m:'au',n:['375','585','750','916','990','999'],sh:[],sy:[],era:'—',d:'El oro lleva la ley en milésimas: 375, 585, 750, 916, 990 o 999. El 375 (9K) es muy frecuente allí.',st:'V',src:'Hallmarking Act 1973, Sch. 2'},
+{id:'uk-pt',t:'Reino Unido: orbe (platino)',c:'UK',m:'pt',n:['850','950','999'],sh:[],sy:[],era:'—',d:'Platino de 850 a 999. El orbe aparece en 950 y 999.',st:'V',src:'Hallmarking Act 1973, Sch. 2'},
+{id:'uk-pd',t:'Reino Unido: Palas Atenea (paladio)',c:'UK',m:'pd',n:['500','950','999'],sh:[],sy:['cabeza'],era:'desde 2009',d:'Paladio contrastado en Reino Unido (500, 950, 999). En España el paladio no es metal precioso legal.',st:'V',src:'Sch. 2 y S.I. 2009/2040'},
+{id:'uk-fecha',t:'Reino Unido: letra de fecha',c:'UK',m:'any',n:[],sh:['escudo'],sy:['letra'],era:'opcional desde 1999',d:'La letra y la forma del escudo fechan el ensayo. Ver la pestaña Letras UK.',st:'V',src:'Sch. 2 §4'},
+{id:'ccm',t:'Convención de Viena: balanza en escudo',c:'CCM',m:'any',n:[],sh:['escudo','octogono'],sy:['balanza'],era:'Convenio de 1972, en vigor desde 1975',d:'Marca común de control entre Estados contratantes. Tipo 1: marca combinada de metal y ley. Tipo 2 (desde 2019): escudo octogonal con marcas aparte de metal y ley. España no es miembro: aquí no se espera.',st:'V',src:'Hallmarking Convention'},
+{id:'de',t:'Alemania: media luna y corona con 800',c:'DE',m:'ag',n:['800'],sh:[],sy:['luna','corona'],era:'desde 1888',d:'Plata alemana con marca del fabricante. No existe un «búho alemán».',st:'P',src:'Guías; sin texto legal alemán'},
+{id:'at',t:'Austria-Hungría: cabeza de Diana',c:'AT',m:'any',n:[],sh:[],sy:['cabeza','letra'],era:'~1872–1922',d:'Con letra de ciudad. Sirve como fecha límite.',st:'P',src:'Guías'},
+{id:'ru-imp',t:'Rusia imperial: kokoshnik y zolotniks',c:'RU',m:'any',n:['84','88','91','56','72'],sh:[],sy:['cabeza'],era:'~1899–1917',d:'Pureza en zolotniks sobre 96 (84 ≈ 875, 88 ≈ 916, 91 ≈ 947, 56 ≈ 583, 72 ≈ 750). Kokoshnik: perfil de mujer con tocado; mirada a la izquierda ~1899–1908 y a la derecha ~1908–1917. Muy falsificado.',st:'P',src:'Catálogos de marcas; sin norma imperial'},
+{id:'ru-urss',t:'URSS: cabeza de obrero / hoz y martillo en estrella',c:'RU',m:'any',n:[],sh:[],sy:['estrella','cabeza'],era:'1927–1958 (obrero); 1958–1991 (hoz y martillo)',d:'Marcas soviéticas. Muy falsificadas.',st:'P',src:'Estudio aportado'},
+{id:'ru-mod',t:'Rusia moderna: kokoshnik con prueba y código',c:'RU',m:'any',n:[],sh:[],sy:['cabeza'],era:'actual',d:'Kokoshnik, prueba, código del laboratorio y código 2D. La Cámara Federal de Ensayo lo describe como contraste oficial.',st:'V',src:'Cámara Federal de Ensayo (probpalata.gov.ru)'},
+{id:'jp',t:'Japón: bandera y milésimas en rombo',c:'JP',m:'any',n:['999','916','750','585','416','375','925'],sh:['rombo'],sy:[],era:'desde 2012 (diseño actual)',d:'Certificación voluntaria de la Casa de la Moneda. «K18» solo no es prueba de la Mint.',st:'V',src:'Japan Mint'},
+{id:'in',t:'India: logo BIS, ley y HUID',c:'IN',m:'any',n:['375','995','800','835','925','958','970','990','999'],sh:[],sy:['letra'],era:'oro: HUID desde 1-7-2021; plata: desde 1-9-2025',d:'Logo BIS, quilates o ley y HUID de 6 caracteres. Se comprueba en la app BIS Care.',st:'V',src:'BIS'},
+{id:'cn',t:'China: 足金 / 足银 con código del fabricante',c:'CN',m:'any',n:['990'],sh:[],sy:[],era:'—',d:'足金 = oro ≥990; 足银 = plata ≥990. Es una norma de pureza (GB 11887) con la marca del fabricante, no un contraste estatal de oficina.',st:'V',src:'GB 11887 (espejo en inglés)'},
+{id:'kr',t:'Corea: pureza, peso y vendedor',c:'KR',m:'any',n:[],sh:[],sy:['letra'],era:'—',d:'Marcado de pureza, peso y vendedor. No tengo más detalle comprobado: no atribuyas un punzón concreto.',st:'P',src:'Estudio aportado (ampliación)'},
+{id:'id',t:'Indonesia: certificación SNI 8880:2020',c:'ID',m:'au',n:[],sh:[],sy:[],era:'2020',d:'Norma de certificación del oro. Sin detalle de marcas comprobado.',st:'P',src:'Estudio aportado (ampliación)'},
+{id:'tr',t:'Turquía: Darphane (ayar y damga)',c:'TR',m:'any',n:[],sh:[],sy:[],era:'—',d:'La Casa de la Moneda analiza y contrasta metales preciosos. La tipología exacta de la damga no está comprobada.',st:'P',src:'Darphane ve Damga Matbaası'},
+{id:'hk',t:'Hong Kong: marca de ley obligatoria en venta',c:'HK',m:'au',n:['333'],sh:[],sy:[],era:'—',d:'La marca de ley del oro es obligatoria al por menor a partir de 8K (333).',st:'V',src:'Aduanas de Hong Kong'},
+{id:'ae',t:'Emiratos: rectángulo + halcón, castillo o palmera',c:'AE',m:'any',n:['999','916','875','750'],sh:['rect'],sy:['halcón','castillo','palmera'],era:'Decisión de 2018',d:'Contraste oficial: pureza en rectángulo, logo del metal (halcón = oro, castillo = plata, palmera = platino) y símbolo del organismo.',st:'V',src:'MOIAT / ESMA'},
+{id:'sa',t:'Arabia Saudí: ley y marca comercial registrada',c:'SA',m:'any',n:['999','916','875','750','583','925','900','800','950','850'],sh:[],sy:[],era:'—',d:'Oro 999·916·875·750·583; plata 999·925·900·800; platino 999·950·850.',st:'V',src:'Regulación de metales preciosos (istitlaa)'},
+{id:'us',t:'EE. UU.: quilates o «Sterling» con marca del fabricante',c:'US',m:'any',n:['925','900'],sh:[],sy:['letra'],era:'—',d:'No hay oficina federal de contraste. «Sterling» solo desde 925; «coin silver» desde 900. El oro lleva quilates y la marca del responsable.',st:'V',src:'16 CFR 23 (FTC)'},
+{id:'mx',t:'México: calidad, marca y país',c:'MX',m:'any',n:['925','900','350'],sh:[],sy:[],era:'NOM-033/1-SE-2020',d:'Mínimos: oro 10K, plata 925, platino 900, paladio 350. Obligatorios registro de calidad, de marca y de país.',st:'V',src:'NOM-033/1-SE-2020'},
+{id:'ca',t:'Canadá: sterling o .925 con marca comercial',c:'CA',m:'ag',n:['925'],sh:[],sy:[],era:'—',d:'Marcado voluntario pero exacto.',st:'P',src:'Texto oficial indexado'},
+{id:'pl',t:'Polonia: letra de oficina',c:'PL',m:'any',n:['999','960','750','585','500','375','333','925','875','830','800'],sh:[],sy:['letra'],era:'—',d:'Contraste obligatorio, con letra de oficina (W Varsovia, K Cracovia).',st:'V',src:'GUM; perfil CCM'},
+{id:'cz',t:'Chequia: gallo (750) o cisne (585)',c:'CZ',m:'au',n:['750','585'],sh:[],sy:['gallo','cisne'],era:'—',d:'Oficina Puncovní úřad, con letra de sucursal (P Praga, B Brno).',st:'V',src:'Perfil CCM'},
+{id:'bg',t:'Bulgaria: rosa (oro) o espiga (plata)',c:'BG',m:'any',n:['916','833','750','585','500','333','950','925','800'],sh:[],sy:['rosa','espiga'],era:'—',d:'Marca de garantía con milésimas.',st:'P',src:'Estudio aportado'},
+{id:'ro',t:'Rumanía: marca de Estado con milésimas y registro',c:'RO',m:'any',n:[],sh:[],sy:['letra'],era:'—',d:'Símbolo, milésimas y número de registro. Detalle sin comprobar en el original.',st:'P',src:'ANPC (contenido indexado)'}
+];
+const NUM={
+'999':'Oro 24K, o plata o platino finos. En España es ley admitida (Ley 17/1985, art. 9) y se considera de la ley oficial inmediatamente inferior (art. 10).',
+'995':'India: oro 24KS (IS 1417).',
+'990':'China: 足金/足银 (≥990). Oro 990 en Reino Unido.',
+'958':'Plata Britannia, de Reino Unido.',
+'950':'Platino, ley oficial en España (rombo). Plata de 1.ª ley en la garantía francesa (Minerva).',
+'925':'Plata de ley (sterling). 1.ª ley oficial de la plata en España (rectángulo).',
+'916':'Oro 22K. La Ley 17/1985 lo admite para comercializar en España, pero sin punzón del art. 8; allí suele ser importación o pieza antigua. Frecuente en el Golfo, la India y el Reino Unido.',
+'915':'Plata española de 1.ª ley, ~1935–1988, con estrella de cinco puntas (verificación parcial).',
+'900':'Plata de moneda (EE. UU. «coin»). Platino 900: admitido en España por la Ley 17/1985 y mínimo en México.',
+'875':'Oro 21K (Golfo, Egipto) o plata (84 zolotnik rusa). No figura en las leyes admitidas en España.',
+'850':'Platino 850: admitido en España por la Ley 17/1985 y presente en Arabia Saudí.',
+'835':'Plata 835, frecuente en piezas europeas antiguas.',
+'800':'2.ª ley oficial de la plata en España (rectángulo). También plata alemana desde 1888.',
+'750':'Oro 18K. 1.ª ley oficial del oro en España (elipse).',
+'585':'Oro 14K. 2.ª ley oficial del oro en España (elipse). 583 es el 56 zolotnik ruso.',
+'417':'Oro 10K. No figura en las leyes admitidas en España.',
+'416':'Japón: oro 10K (~416,7).',
+'375':'Oro 9K. La Ley 17/1985 lo admite para comercializar en España; es muy frecuente en el Reino Unido.',
+'333':'Oro 8K. En Hong Kong es el mínimo para venderse con marca de ley.'
+};
+// letras UK 2000-2026 (según la guía; 2008 = j)
+const LET={};(function(){
+ const U='ABCDEFGHJKLMNOPQRSTUVWXYZ'; // 1975-1999: A-H, luego J (1983) a Z; la «I» se omite
+ for(let i=0;i<25;i++)LET[1975+i]=U[i];
+ const L='abcdefghjklmnopqrstuvwxyz'; // 2000-2024: sin «i»
+ for(let i=0;i<25;i++)LET[2000+i]=L[i];
+ LET[2025]='A';LET[2026]='B';})();
+const LEST=y=>y>=2025?'V':'P';
+const LCICLO=y=>y>=2025?'mayúscula serif (ciclo nuevo desde 2025)':y>=2000?'minúscula':'mayúscula (ciclo 1975–1999)';
+const FUENTES=[
+['Reino Unido',[['Sheffield · Marcas y letras de fecha','https://www.assayoffice.co.uk/our-services/uk-hallmarks','Página oficial'],['Sheffield · Noticia de la letra A de 2025','https://www.assayoffice.co.uk/news/in-with-the-new-presenting-date-letter-a-1','Oficial'],['Tabla 1975–presente (secundaria)','https://identifyantiques.com/hallmark-date-letters/uk-1975-present.html','Secundaria; para contrastar'],['Sheffield · Descargas (avisos A y B)','https://www.assayoffice.co.uk/resources/downloads','PDF oficiales'],['Londres · Trace a hallmark','https://www.assayofficelondon.co.uk/other-services/trace-a-hallmark','Consulta puntual, no es catálogo'],['Londres · Dealers Notice 2025 (PDF)','https://www.assayofficelondon.co.uk/media/3205/london-dealers-notice-2025-a4.pdf','PDF oficial'],['Birmingham · Archivo de letras de fecha desde 1773','https://www.theassayoffice.co.uk/date-letters/','De pago (2 £)'],['Birmingham · Dealers Notice 2025 (PDF)','https://www.theassayoffice.co.uk/wp-content/uploads/2025/01/birmingham-dealers-notice-2025.pdf','PDF oficial'],['Edimburgo · Qué es un hallmark','https://www.edinburghassayoffice.co.uk/what-is-a-hallmark/','A veces da 403 al abrirla'],['GOV.UK · Resumen del hallmarking','https://www.gov.uk/government/publications/hallmarking-guidance-notes/hallmarking-is-the-law-guidance-summary','Texto oficial'],['Hallmarking Act 1973','https://www.legislation.gov.uk/ukpga/1973/43/contents','Ley'],['Silvermakersmarks (consulta de fabricantes)','https://www.silvermakersmarks.co.uk/MakersMarks.html','Solo consulta personal']]],
+['Convención de Viena',[['Hallmarking Convention','https://hallmarkingconvention.org/en/about','Sitio oficial'],['Folleto informativo 2025 (PDF)','https://hallmarkingconvention.org/users_uploads/editor/source/pmc-inf-48-2025-information-brochure-reduced-size.pdf','© Convention; sin uso comercial']]],
+['Francia',[['Douane · Garantie des métaux (PDF)','https://www.douane.gouv.fr/sites/default/files/uploads/files/2019-09/garantie-metaux-france.pdf','Puede estar desactualizado'],['Interor · Diccionario Beuque (consulta)','https://poincons.interor.fr/','© Inter’Or; solo consulta'],['Chambre Française de l’Or · Poinçons','https://chambrefrancaisedelor.fr/poincons-garantie','Secundaria']]],
+['España',[['Ley 17/1985','https://www.boe.es/eli/es/l/1985/07/01/17','Marco legal; sin catálogo gráfico'],['OEPM · Localizador de marcas','https://consultas2.oepm.es/LocalizadorWeb/BusquedaMarcas','El punzón de origen se registra como marca; no es catálogo de contrastes históricos'],['Junta de Andalucía · Metales preciosos','https://www.juntadeandalucia.es/organismos/universidadindustriaenergiaeinnovacion/areas/industria/metales-preciosos.html','Laboratorios y leyes'],['JORGC · Normativa de contraste','https://jorgc.org/laboratoris/laboratori-de-metalls/normativa-de-contrast/','Resumen práctico (Cataluña)']]],
+['Rusia e India',[['Cámara Federal de Ensayo (Rusia)','https://probpalata.gov.ru/deyatelnost/kleymenie-i-markirovka/klejmenie-i-markirovka/','Contraste actual'],['BIS · Preguntas sobre hallmarking','https://www.bis.gov.in/hallmarking-overview/hallmarking-faqs/mandatory/?lang=en','Oficial']]],
+['Fotos con licencia libre',[['Wikimedia Commons · Hallmarks','https://commons.wikimedia.org/wiki/Category:Hallmarks','Licencia fichero a fichero'],['Cabeza de leopardo (Londres)','https://commons.wikimedia.org/wiki/File:Leopard%27s_head_hallmark.jpg','CC BY-SA 4.0'],['Collage de hallmarks británicos','https://commons.wikimedia.org/wiki/File:British_hallmarks.jpg','CC BY-SA 3.0 / GFDL']]]
+];
+const ES_DOM=/(^|\.)(boe\.es|oepm\.es|juntadeandalucia\.es|jorgc\.org|industria\.gob\.es)$/;
+function trLink(u){try{const x=new URL(u);if(ES_DOM.test(x.hostname)||/\.pdf$/i.test(x.pathname))return '';
+ const h=x.hostname.replace(/-/g,'--').replace(/\./g,'-')+'.translate.goog';
+ const q=(x.search?x.search+'&':'?')+'_x_tr_sl=auto&_x_tr_tl=es&_x_tr_hl=es';
+ return ` <a class="tr" href="https://${h}${x.pathname}${q}" target="_blank" rel="noopener" title="Abrir traducida al español (Google Translate)">🇪🇸 ES</a>`;}catch(e){return ''}}
+const LIBROS=['Tardy, Les poinçons de garantie (Francia)','Jackson, Hallmarks / Pickford (Reino Unido)','Culme, Directory of Gold & Silversmiths','Bradbury’s Book of Hallmarks (letras de fecha; vía Sheffield)','Fernández, Munoa, Rabasco, Marcas de la plata española y virreinal (Antiqvaria, 1992; ISBN 84-86508-28-2)'];
+
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const S={num:'',sh:new Set(),sy:new Set(),pais:'',metal:''};
+const MN={au:'oro',ag:'plata',pt:'platino',pd:'paladio',any:'varios'};
+
+function chips(el,items,set,key){
+  el.innerHTML=items.map(([v,l])=>`<button class="chip" data-v="${esc(v)}" aria-pressed="false">${esc(l)}</button>`).join('');
+  el.onclick=e=>{const b=e.target.closest('button');if(!b)return;const v=b.dataset.v;
+    set.has(v)?set.delete(v):set.add(v);b.setAttribute('aria-pressed',set.has(v));run();};
+}
+chips($('#shapes'),SHAPES,S.sh);
+chips($('#syms'),SYMS.map(s=>[s,s[0].toUpperCase()+s.slice(1)]),S.sy);
+$('#pais').innerHTML+=Object.entries(PAIS).map(([k,v])=>`<option value="${k}">${v}</option>`).join('');
+
+function score(e){
+  let sc=0,why=[];
+  if(S.num){ if(e.n.includes(S.num)){sc+=3;why.push('cifra '+S.num);} else if(e.n.length) sc-=1; else sc+=0; }
+  const sh=[...S.sh];if(sh.length){const h=sh.filter(x=>e.sh.includes(x));if(h.length){sc+=2*h.length;why.push('forma');}else if(e.sh.length)sc-=1;}
+  const sy=[...S.sy];if(sy.length){const h=sy.filter(x=>e.sy.includes(x));if(h.length){sc+=2*h.length;why.push('símbolo: '+h.join(', '));}}
+  return {sc,why};
+}
+function coherencia(){
+  const n=S.num,sh=[...S.sh];if(!n||sh.length!==1)return '';
+  if(S.pais&&S.pais!=='ES')return '';
+  const exp={'750':'ovalo','585':'ovalo','925':'rect','800':'rect','950':'rombo'};
+  if(!exp[n])return '';
+  const ok=exp[n]===sh[0];
+  const nm={ovalo:'elipse',rect:'rectángulo',rombo:'rombo'};
+  return ok?`<div class="alert ok"><b>Cuadra con el contraste español.</b> ${n} en ${nm[exp[n]]} es lo que fija el RD 197/1988 (art. 19) para el contraste moderno.</div>`
+   :`<div class="alert bad"><b>No cuadra con un contraste español.</b> ${n} debería ir en ${nm[exp[n]]} (RD 197/1988, art. 19). Puede ser una marca de otro país, de fabricante, de otra época, o dudosa. Solo vale para el contraste español de 1989 en adelante.</div>`;
+}
+function run(){
+  S.num=$('#num').value.trim();S.pais=$('#pais').value;S.metal=$('#metal').value;
+  const any=S.num||S.sh.size||S.sy.size||S.pais||S.metal;
+  $('#coh').innerHTML=coherencia();
+  if(!any){$('#out').innerHTML=`<div class="card muted small">Marca lo que ves en la pieza. Con la cifra y el contorno suele bastar para acotar; el dibujo y el país afinan.<br><br>${D.length} marcas en la base.</div>`;return;}
+  let r=D.filter(e=>(!S.pais||e.c===S.pais)&&(!S.metal||e.m===S.metal||e.m==='any')).map(e=>({e,...score(e)}));
+  const crit=S.num||S.sh.size||S.sy.size;
+  if(crit)r=r.filter(x=>x.sc>0);
+  r.sort((a,b)=>b.sc-a.sc||(a.e.st>b.e.st?1:-1));
+  let h='';
+  if(S.num&&NUM[S.num])h+=`<div class="card"><b>${esc(S.num)}</b><p class="small" style="margin:6px 0 0">${esc(NUM[S.num])}</p></div>`;
+  if(!r.length)h+=`<div class="alert warn">Ninguna marca de la base coincide. Eso no la hace falsa: la base cubre solo los sistemas oficiales documentados, no los punzones de fabricante. Prueba con menos filtros o consulta las fuentes.</div>`;
+  else h+=`<p class="small muted">${r.length} posibles. Ordenadas por coincidencia.</p>`;
+  h+=r.slice(0,25).map(({e,why})=>`<div class="card res"><h3>${esc(e.t)}<span class="b ${e.st}">${ST[e.st]}</span></h3>
+   <div class="meta">${PAIS[e.c]} · ${MN[e.m]}${e.era&&e.era!=='—'?' · '+esc(e.era):''}</div>
+   <p>${esc(e.d)}</p>${why.length?`<div class="why">Coincide: ${esc(why.join(' · '))}</div>`:''}
+   <div class="meta" style="margin-top:6px">Fuente: ${esc(e.src)}</div></div>`).join('');
+  $('#out').innerHTML=h;
+}
+['#num','#pais','#metal'].forEach(s=>$(s).addEventListener('input',run));
+$('#reset').onclick=()=>{$('#num').value='';$('#pais').value='';$('#metal').value='';S.sh.clear();S.sy.clear();document.querySelectorAll('.chip[aria-pressed]').forEach(b=>b.setAttribute('aria-pressed','false'));run();};
+
+// Cifras
+$('#cf').addEventListener('input',()=>{const v=$('#cf').value.trim(),n=+v;
+  if(!v){$('#cfo').innerHTML='';return;}
+  let h=NUM[v]?`<p style="margin:0 0 8px">${esc(NUM[v])}</p>`:'<p class="muted small" style="margin:0 0 8px">No tengo nota para esta cifra.</p>';
+  if(n>0&&n<=1000)h+=`<div class="small muted">${(n*24/1000).toFixed(1).replace('.',',')} quilates · ${(n*96/1000).toFixed(1).replace('.',',')} zolotniks (si es ruso)</div>`;
+  $('#cfo').innerHTML=h;});
+$('#kq').addEventListener('input',()=>{const k=+$('#kq').value.replace(',','.');
+  $('#kqo').textContent=(k>0&&k<=24)?`${k}K = ${(k/24*1000).toFixed(1).replace('.',',')} ‰ (${(k/24*100).toFixed(2).replace('.',',')} % de oro)`:'';});
+$('#tcf').innerHTML='<tr><th>‰</th><th>K</th><th>Nota</th></tr>'+Object.keys(NUM).sort((a,b)=>b-a).map(k=>`<tr><td>${k}</td><td>${(k*24/1000).toFixed(1).replace('.',',')}</td><td class="small">${esc(NUM[k])}</td></tr>`).join('');
+
+// Letras UK
+function fecha(){const y=$('#yr').value.trim(),l=$('#lt').value.trim();let h='';
+  const bd=yr=>`<span class="b ${LEST(yr)}">${ST[LEST(yr)]}</span>`;
+  if(y){const n=+y;h=LET[n]?`<div class="big">${LET[n]} ${bd(n)}</div><div class="muted small">Letra de ${n}: ${LCICLO(n)}.${n===1983?' Birmingham la indexa como J; algunas referencias la leen como I ornamentada.':''}${n===2008?' La «j» es la lectura de Birmingham.':''}</div>`:'<div class="muted small">Fuera de 1975–2026. Antes de 1975 cada oficina tenía su ciclo.</div>';}
+  else if(l){const ys=Object.keys(LET).filter(k=>LET[k]===l);
+    h=ys.length?`<div class="big">${ys.join(' o ')}</div><div class="muted small">${ys.length>1?'La misma letra aparece en dos ciclos: se distingue por la tipografía y la forma del escudo (los años 2025–2026 llevan mayúscula serif; 1975–1999, mayúscula de otro tipo). Mira el escudo.':'Ciclo: '+LCICLO(ys[0])+'.'}</div>`:'<div class="muted small">Esa letra no figura en la tabla (la «i» no se usa; 1983 aparece como «J»).</div>';}
+  $('#fo').innerHTML=h;}
+$('#yr').addEventListener('input',()=>{$('#lt').value='';fecha();});
+$('#lt').addEventListener('input',()=>{$('#yr').value='';fecha();});
+$('#tf').innerHTML='<tr><th>Año</th><th>Letra</th><th>Año</th><th>Letra</th></tr>'+Array.from({length:26},(_,i)=>{const a=1975+i,b=2001+i;return `<tr><td>${a}</td><td>${LET[a]}</td><td>${b}</td><td>${LET[b]}</td></tr>`}).join('');
+
+// Fuentes
+$('#fu').innerHTML=FUENTES.map(([g,l])=>`<div class="card"><b>${g}</b><ul>${l.map(([t,u,n])=>`<li><a href="${u}" target="_blank" rel="noopener">${esc(t)}</a>${trLink(u)}<div class="small muted">${esc(n)}</div></li>`).join('')}</ul></div>`).join('')+
+ `<div class="card"><b>Libros de referencia (consulta o compra, no se reproducen)</b><ul>${LIBROS.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>
+ <div class="card small"><b>Lo que no se puede</b><ul><li>Un catálogo completo de punzones de fabricante con fotos: son obras y bases protegidas.</li><li>Copiar 925-1000.com, Interor/Beuque o escanear los libros de arriba.</li><li>Una API pública mundial de marcas de fabricante: no existe.</li><li>Para identificar un fabricante: Reino Unido, Trace a Hallmark o el archivo de Birmingham; España, OEPM y los libros de Munoa; Francia, Interor (consulta) y Tardy.</li></ul></div>`;
+
+// Navegación
+$('#nav').onclick=e=>{const b=e.target.closest('button');if(!b)return;
+  document.querySelectorAll('#nav button').forEach(x=>x.setAttribute('aria-selected',x===b));
+  document.querySelectorAll('section').forEach(s=>s.classList.toggle('on',s.id===b.dataset.t));window.scrollTo(0,0);};
+run();
+// PWA mínima
+try{const m={name:'Marcas de contraste',short_name:'Marcas',start_url:'.',display:'standalone',background_color:'#14110c',theme_color:'#14110c'};
+ const l=document.createElement('link');l.rel='manifest';l.href=URL.createObjectURL(new Blob([JSON.stringify(m)],{type:'application/manifest+json'}));document.head.appendChild(l);}catch(e){}
+</script>
+</body>
+</html>
